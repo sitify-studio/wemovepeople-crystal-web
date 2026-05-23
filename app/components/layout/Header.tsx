@@ -74,7 +74,7 @@ const headerStyles = `
     width: 100%;
   }
 
-  .header-organic-button {
+  .header-cta-button {
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
@@ -83,49 +83,25 @@ const headerStyles = `
     font-weight: 500;
     letter-spacing: 0.06em;
     text-decoration: none;
-    color: white;
-    background: transparent;
-    border: 2px solid;
-    border-image: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) 1;
+    color: #fff !important;
+    background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) !important;
+    border: none !important;
     border-radius: 50px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    backdrop-filter: blur(10px);
+    box-shadow: none;
   }
 
-  .header-organic-button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color));
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    border-radius: 50px;
+  .header-cta-button:hover,
+  .header-cta-button:focus {
+    color: #fff !important;
+    background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) !important;
+    border: none !important;
+    transform: none;
+    box-shadow: none;
   }
 
-  .header-organic-button:hover::before {
-    opacity: 1;
-  }
-
-  .header-organic-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(var(--theme-primary-rgb), 0.25);
-    border-color: transparent;
-  }
-
-  .header-organic-button > * {
-    position: relative;
-    z-index: 1;
-    transition: color 0.3s ease;
-  }
-
-  .header-organic-button:hover > * {
-    color: white;
-  }
-
-  .header-organic-button .button-text {
-    color: var(--theme-primary-color);
+  .header-cta-button .button-text,
+  .header-cta-button svg {
+    color: #fff !important;
   }
 
 `;
@@ -227,7 +203,7 @@ export const Header: React.FC = () => {
 
           <div className="ml-auto flex shrink-0 items-center gap-3">
             {showCta && (
-              <Link href={ctaHref} className="header-organic-button group inline-flex">
+              <Link href={ctaHref} className="header-cta-button inline-flex">
                 <span className="button-text">{ctaLabel}</span>
                 {phoneNumber ? (
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

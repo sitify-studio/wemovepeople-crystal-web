@@ -16,6 +16,7 @@ import { getImageSrc } from '@/app/lib/utils';
 import { tiptapToText } from '@/app/lib/seo';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
 import { useScrollAnimation, useStaggeredAnimation } from '@/app/hooks/useScrollAnimation';
+import { getThemeColors } from '@/app/lib/themeBuilder';
 
 type DisplayServiceArea = {
   city: string;
@@ -93,13 +94,33 @@ export const Footer: React.FC = () => {
     return url ? getImageSrc(url) : undefined;
   }, [site?.footer?.logo?.url, site?.theme?.logoUrl]);
 
+  const themeColors = useMemo(() => getThemeColors(site), [site]);
+
   const themeData = useMemo(() => {
     const t = site?.theme;
     return {
-      primaryColor: t?.primaryButtonColorLight || t?.darkPrimaryColor || '#6366f1',
-      secondaryColor: t?.darkSecondaryColor || t?.lightSecondaryColor || '#8b5cf6',
+      footerBackground:
+        t?.sectionBackgroundColorDark ||
+        t?.cardBackgroundColorDark ||
+        t?.darkPrimaryColor ||
+        'var(--wb-section-bg-dark)',
+      primaryColor:
+        t?.primaryButtonColorLight ||
+        t?.primaryButtonColorDark ||
+        themeColors.primaryButton,
+      secondaryColor:
+        t?.darkSecondaryColor ||
+        t?.lightSecondaryColor ||
+        themeColors.secondary,
+      textOnDark: t?.textOnDarkColor || themeColors.textOnDark,
+      textOnDarkSecondary:
+        t?.textOnDarkSecondaryColor || themeColors.textOnDarkSecondary,
+      hoverActive:
+        t?.hoverActiveColorLight ||
+        t?.hoverActiveColorDark ||
+        themeColors.hoverActive,
     };
-  }, [site?.theme]);
+  }, [site?.theme, themeColors]);
 
   const businessData = useMemo(() => {
     const addr = site?.business?.address;
@@ -167,8 +188,11 @@ export const Footer: React.FC = () => {
     <footer
       ref={footerRef}
       id="contact"
-      className="pt-12 pb-3 sm:pt-14 sm:pb-4 md:pt-16 md:pb-5 relative overflow-hidden"
-      style={{ backgroundColor: '#473235' }}
+      className="relative overflow-hidden pt-12 pb-3 sm:pt-14 sm:pb-4 md:pt-16 md:pb-5"
+      style={{
+        backgroundColor: themeData.footerBackground,
+        color: themeData.textOnDark,
+      }}
     >
       <div className="absolute inset-0 opacity-10">
         <div
@@ -206,9 +230,10 @@ export const Footer: React.FC = () => {
 
             {businessName && (
               <h3
-                className={`text-2xl font-bold text-white mb-4 transition-all duration-1000 delay-200 ${
+                className={`mb-4 text-2xl font-bold transition-all duration-1000 delay-200 ${
                   footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
+                style={{ color: themeData.textOnDark }}
               >
                 {businessName}
               </h3>
@@ -216,9 +241,10 @@ export const Footer: React.FC = () => {
 
             {showFooterDescription && (
               <div
-                className={`mb-6 max-w-md text-sm leading-relaxed text-gray-300 transition-all duration-1000 delay-300 sm:text-base ${
+                className={`mb-6 max-w-md text-sm leading-relaxed transition-all duration-1000 delay-300 sm:text-base ${
                   footerVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                 }`}
+                style={{ color: themeData.textOnDarkSecondary }}
               >
                 <TiptapRenderer content={footerDescription} as="inline" />
               </div>
@@ -230,7 +256,9 @@ export const Footer: React.FC = () => {
                   footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
               >
-                <p className="text-white font-medium mb-4">Follow Us</p>
+                <p className="mb-4 font-medium" style={{ color: themeData.textOnDark }}>
+                  Follow Us
+                </p>
                 <div className="flex space-x-4">
                   {businessData.socialLinks.map((social, index) => {
                     const iconPath = getSocialIcon(social.platform);
@@ -238,16 +266,19 @@ export const Footer: React.FC = () => {
                       <a
                         key={`${social.platform}-${index}`}
                         href={social.url}
-                        className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 hover:scale-110"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-300 hover:scale-110"
                         style={{
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                          color: themeData.textOnDarkSecondary,
+                          backgroundColor: `color-mix(in srgb, ${themeData.textOnDark} 10%, transparent)`,
                           backdropFilter: 'blur(10px)',
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.backgroundColor = themeData.primaryColor;
+                          e.currentTarget.style.color = themeData.textOnDark;
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                          e.currentTarget.style.backgroundColor = `color-mix(in srgb, ${themeData.textOnDark} 10%, transparent)`;
+                          e.currentTarget.style.color = themeData.textOnDarkSecondary;
                         }}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -270,9 +301,10 @@ export const Footer: React.FC = () => {
 
           <div>
             <h4
-              className={`text-lg font-semibold text-white mb-6 transition-all duration-1000 delay-400 ${
+              className={`mb-6 text-lg font-semibold transition-all duration-1000 delay-400 ${
                 footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
+              style={{ color: themeData.textOnDark }}
             >
               Quick Links
             </h4>
@@ -285,8 +317,17 @@ export const Footer: React.FC = () => {
                 <Link
                   key={link.id}
                   href={link.href}
-                  className="block text-gray-300 hover:text-white transition-colors duration-300 hover:translate-x-1"
-                  style={{ transitionDelay: `${index * 0.1}s` }}
+                  className="block transition-colors duration-300 hover:translate-x-1"
+                  style={{
+                    color: themeData.textOnDarkSecondary,
+                    transitionDelay: `${index * 0.1}s`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = themeData.textOnDark;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = themeData.textOnDarkSecondary;
+                  }}
                 >
                   {link.label}
                 </Link>
@@ -296,9 +337,10 @@ export const Footer: React.FC = () => {
 
           <div>
             <h4
-              className={`text-lg font-semibold text-white mb-6 transition-all duration-1000 delay-600 ${
+              className={`mb-6 text-lg font-semibold transition-all duration-1000 delay-600 ${
                 footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
+              style={{ color: themeData.textOnDark }}
             >
               Contact Info
             </h4>
@@ -311,7 +353,7 @@ export const Footer: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{ backgroundColor: `${themeData.primaryColor}20` }}
+                    style={{ backgroundColor: `color-mix(in srgb, ${themeData.primaryColor} 20%, transparent)` }}
                   >
                     <svg
                       className="w-4 h-4"
@@ -324,7 +366,14 @@ export const Footer: React.FC = () => {
                   </div>
                   <a
                     href={`tel:${businessData.phone.replace(/\s/g, '')}`}
-                    className="text-gray-300 hover:text-white transition-colors"
+                    className="transition-colors"
+                    style={{ color: themeData.textOnDarkSecondary }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = themeData.textOnDark;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = themeData.textOnDarkSecondary;
+                    }}
                   >
                     {businessData.phone}
                   </a>
@@ -335,7 +384,7 @@ export const Footer: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{ backgroundColor: `${themeData.secondaryColor}20` }}
+                    style={{ backgroundColor: `color-mix(in srgb, ${themeData.secondaryColor} 20%, transparent)` }}
                   >
                     <svg
                       className="w-4 h-4"
@@ -348,7 +397,14 @@ export const Footer: React.FC = () => {
                   </div>
                   <a
                     href={`mailto:${businessData.email}`}
-                    className="text-gray-300 hover:text-white transition-colors"
+                    className="transition-colors"
+                    style={{ color: themeData.textOnDarkSecondary }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = themeData.textOnDark;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = themeData.textOnDarkSecondary;
+                    }}
                   >
                     {businessData.email}
                   </a>
@@ -359,7 +415,7 @@ export const Footer: React.FC = () => {
                 <div className="flex items-start space-x-3">
                   <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center mt-1"
-                    style={{ backgroundColor: `${themeData.primaryColor}20` }}
+                    style={{ backgroundColor: `color-mix(in srgb, ${themeData.primaryColor} 20%, transparent)` }}
                   >
                     <svg
                       className="w-4 h-4"
@@ -370,7 +426,7 @@ export const Footer: React.FC = () => {
                       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                     </svg>
                   </div>
-                  <div className="text-gray-300">
+                  <div style={{ color: themeData.textOnDarkSecondary }}>
                     {businessData.address.street && <div>{businessData.address.street}</div>}
                     <div>
                       {[businessData.address.city, businessData.address.state]
@@ -392,7 +448,9 @@ export const Footer: React.FC = () => {
             }`}
           >
             <div className="text-center mb-3">
-              <h4 className="text-lg font-semibold text-white mb-2">Service Areas</h4>
+              <h4 className="mb-2 text-lg font-semibold" style={{ color: themeData.textOnDark }}>
+                Service Areas
+              </h4>
               <div
                 className="h-px mx-auto w-16"
                 style={{
@@ -404,8 +462,17 @@ export const Footer: React.FC = () => {
               {businessData.serviceAreas.slice(0, 8).map((area, index) => (
                 <div
                   key={`${area.city}-${area.region}-${index}`}
-                  className="text-gray-300 hover:text-white transition-colors duration-300 text-sm"
-                  style={{ transitionDelay: `${index * 0.1}s` }}
+                  className="text-sm transition-colors duration-300"
+                  style={{
+                    color: themeData.textOnDarkSecondary,
+                    transitionDelay: `${index * 0.1}s`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = themeData.textOnDark;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = themeData.textOnDarkSecondary;
+                  }}
                 >
                   {area.region ? `${area.city}, ${area.region}` : area.city}
                 </div>
@@ -414,8 +481,18 @@ export const Footer: React.FC = () => {
           </div>
         )}
 
-        <div className="border-t border-gray-700/80 pt-4 pb-0">
-          <p className="text-center text-gray-400 text-sm leading-snug">{copyright}</p>
+        <div
+          className="pt-4 pb-0"
+          style={{
+            borderTop: `1px solid color-mix(in srgb, ${themeData.textOnDark} 12%, transparent)`,
+          }}
+        >
+          <p
+            className="text-center text-sm leading-snug"
+            style={{ color: themeData.textOnDarkSecondary }}
+          >
+            {copyright}
+          </p>
         </div>
       </div>
     </footer>

@@ -174,7 +174,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ hero, page, className 
       text-transform: uppercase;
     }
 
-    .organic-button {
+    .hero-cta-button {
       display: inline-flex;
       align-items: center;
       gap: 1rem;
@@ -182,49 +182,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ hero, page, className 
       font-size: 1rem;
       font-weight: 500;
       text-decoration: none;
-      color: white;
-      background: transparent;
-      border: 2px solid;
-      border-image: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) 1;
+      color: #fff !important;
+      background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) !important;
+      border: none !important;
       border-radius: 50px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-      backdrop-filter: blur(10px);
+      box-shadow: none;
     }
 
-    .organic-button::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color));
-      opacity: 0;
-      transition: opacity 0.6s ease;
-      border-radius: 50px;
+    .hero-cta-button:hover,
+    .hero-cta-button:focus {
+      color: #fff !important;
+      background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) !important;
+      border: none !important;
+      transform: none;
+      box-shadow: none;
     }
 
-    .organic-button:hover::before {
-      opacity: 1;
-    }
-
-    .organic-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(var(--theme-primary-rgb), 0.3);
-      border-color: transparent;
-    }
-
-    .organic-button > * {
-      position: relative;
-      z-index: 1;
-      transition: color 0.3s ease;
-    }
-
-    .organic-button:hover > * {
-      color: white;
-    }
-
-    .organic-button .button-text {
-      color: var(--theme-primary-color);
+    .hero-cta-button .button-text,
+    .hero-cta-button svg {
+      color: #fff !important;
     }
 
     .geometric-3d {
@@ -450,10 +426,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ hero, page, className 
                       ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                     }`}
                   >
-                    <Link href={ctaButton.href} className="organic-button group">
+                    <Link href={ctaButton.href} className="hero-cta-button">
                       <span className="button-text">{ctaButton.label}</span>
                       <svg
-                        className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-2"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
