@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { useThemeFonts } from '@/app/hooks/useTheme';
-import { getBrandName, getHeaderNavItems } from '@/app/lib/siteContent';
+import { getHeaderNavItems } from '@/app/lib/siteContent';
 import { getImageSrc, cn } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
 import { resolvePrimaryCta } from '@/app/components/ui/made';
@@ -32,15 +32,6 @@ const headerStyles = `
     background: rgba(255, 255, 255, 0.92);
     box-shadow: 0 8px 32px rgba(var(--theme-primary-rgb), 0.08);
     border-bottom-color: rgba(var(--theme-primary-rgb), 0.12);
-  }
-
-  .royal-brand {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: clamp(1.05rem, 2vw, 1.35rem);
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    color: #1a1a1a;
-    line-height: 1.1;
   }
 
   .royal-nav-link {
@@ -114,7 +105,6 @@ export const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const businessName = getBrandName(site) || 'Business';
   const logoImage = site?.theme?.logoUrl ? getImageSrc(site.theme.logoUrl) : undefined;
   const phoneNumber = site?.business?.phone?.trim();
 
@@ -175,23 +165,18 @@ export const Header: React.FC = () => {
         style={{ fontFamily: themeFonts.body }}
       >
         <div className="mx-auto flex h-[4.25rem] w-full max-w-[90rem] items-center gap-4 px-6 lg:h-[4.75rem] lg:gap-8 lg:px-16">
-          <Link
-            href="/"
-            className="flex shrink-0 items-center gap-3 no-underline"
-            aria-label={businessName}
-          >
-            {logoImage && (
+          {logoImage && (
+            <Link href="/" className="flex shrink-0 items-center no-underline" aria-label="Home">
               <OptimizedImage
                 src={logoImage}
-                alt=""
-                width={40}
-                height={40}
+                alt="Logo"
+                width={180}
+                height={56}
                 priority
-                className="h-9 w-9 object-contain lg:h-10 lg:w-10"
+                className="h-11 w-auto max-h-[3.25rem] object-contain sm:h-12 lg:h-14"
               />
-            )}
-            <span className="royal-brand">{businessName}</span>
-          </Link>
+            </Link>
+          )}
 
           <nav className="hidden flex-1 items-center justify-center gap-8 lg:flex xl:gap-10" aria-label="Primary">
             {navItems.map((item) => (

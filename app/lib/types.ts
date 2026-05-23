@@ -331,7 +331,7 @@ export interface Page {
     }>;
   };
   projectsSection?: {
-    enabled: boolean;
+    enabled?: boolean;
     title?: any;
     description?: any;
     projectIds?: string[];
@@ -344,6 +344,12 @@ export interface Page {
       };
       href?: string;
     }>;
+  };
+  /** CMS section header (title/description) — paired with `projectsSection` for project cards */
+  projectSection?: {
+    enabled: boolean;
+    title?: any;
+    description?: any;
   };
   cta2Section?: {
     enabled: boolean;

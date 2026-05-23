@@ -111,7 +111,10 @@ export default function PageSlugClient({ pageSlug: pageSlugProp }: PageSlugClien
             <CTASection ctaSection={page?.ctaSection} />
             <WhyChooseUsSection whyChooseUsSection={page?.whyChooseUsSection} />
             <CompanyDetailSection companyDetailSection={page?.companyDetailSection} />
-            <ProjectsSection projectsSection={page?.projectsSection} />
+            <ProjectsSection
+              projectSection={page?.projectSection}
+              projectsSection={page?.projectsSection}
+            />
             <CTA2Section cta2Section={page?.cta2Section} />
             <CTA3Section cta3Section={page?.cta3Section} />
           </>

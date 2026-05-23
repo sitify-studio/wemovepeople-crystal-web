@@ -220,23 +220,12 @@ export const Footer: React.FC = () => {
               >
                 <Image
                   src={logoImage}
-                  alt={`${businessName} logo`}
-                  width={200}
-                  height={64}
-                  className="h-12 w-auto hover:scale-105 transition-transform duration-300"
+                  alt="Logo"
+                  width={280}
+                  height={88}
+                  className="h-16 w-auto hover:scale-105 transition-transform duration-300 md:h-20"
                 />
               </div>
-            )}
-
-            {businessName && (
-              <h3
-                className={`mb-4 text-2xl font-bold transition-all duration-1000 delay-200 ${
-                  footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ color: themeData.textOnDark }}
-              >
-                {businessName}
-              </h3>
             )}
 
             {showFooterDescription && (

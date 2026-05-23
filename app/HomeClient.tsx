@@ -135,7 +135,11 @@ export default function HomeClient() {
         <CompanyDetailSection companyDetailSection={displayPage.companyDetailSection} />
         <CTASection ctaSection={displayPage.ctaSection} />
         <BlogSection blogSection={displayPage.blogSection} />
-        <ProjectsSection projectsSection={displayPage.projectsSection} />
+        <ProjectsSection
+          projectSection={displayPage.projectSection}
+          projectsSection={displayPage.projectsSection}
+          projectsLimit={3}
+        />
         <GallerySection gallerySection={displayPage.gallerySection} />
         <WhyChooseUsSection whyChooseUsSection={displayPage.whyChooseUsSection} />
         <FAQSection faqSection={displayPage.faqSection} />
