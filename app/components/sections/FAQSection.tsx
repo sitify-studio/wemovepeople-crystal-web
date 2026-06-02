@@ -58,7 +58,11 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
     <section
       ref={sectionRef}
       className={cn(SECTION_PY, 'relative overflow-hidden', className)}
-      style={{ backgroundColor: themeColors.pageBackground, fontFamily: themeFonts.body }}
+      style={{
+        backgroundColor: themeColors.sectionBackgroundDark,
+        color: themeColors.darkPrimaryText,
+        fontFamily: themeFonts.body,
+      }}
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-5">
@@ -89,7 +93,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
                 <h2
                   ref={titleRef}
                   className="text-4xl md:text-5xl font-bold mb-4"
-                  style={{ color: themeColors.mainText, fontFamily: themeFonts.heading }}
+                  style={{ color: themeColors.darkPrimaryText, fontFamily: themeFonts.heading }}
                 >
                   <TiptapRenderer content={faqSection.title} as="inline" />
                 </h2>
@@ -102,7 +106,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
                 className={`text-lg max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
                   descriptionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
-                style={{ color: themeColors.secondaryText }}
+                style={{ color: themeColors.darkSecondaryText }}
               >
                 <TiptapRenderer content={faqSection.description} as="inline" />
               </p>
@@ -133,16 +137,18 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
                       background: isOpen
                         ? `linear-gradient(135deg, ${themeColors.primaryButton}, ${themeColors.hoverActive})`
                         : themeColors.cardBackgroundDark,
-                      color: isOpen ? themeColors.darkPrimaryText : themeColors.darkSecondaryText,
+                      color: themeColors.darkPrimaryText,
                     }}
                     onMouseEnter={(e) => {
                       if (!isOpen) {
                         e.currentTarget.style.backgroundColor = themeColors.hoverActive;
+                        e.currentTarget.style.color = themeColors.darkPrimaryText;
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isOpen) {
                         e.currentTarget.style.background = themeColors.cardBackgroundDark;
+                        e.currentTarget.style.color = themeColors.darkPrimaryText;
                       }
                     }}
                   >
@@ -172,16 +178,16 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
                     style={{
                       maxHeight: isOpen ? '500px' : '0px',
                       opacity: isOpen ? 1 : 0,
-                      backgroundColor: themeColors.cardBackground,
+                      backgroundColor: themeColors.cardBackgroundDark,
                     }}
                   >
                     <div
                       className="px-6 py-5 border-l-4"
                       style={{
-                        borderColor: `color-mix(in srgb, ${themeColors.mainText} 20%, transparent)`,
+                        borderColor: `color-mix(in srgb, ${themeColors.darkPrimaryText} 25%, transparent)`,
                       }}
                     >
-                      <p className="leading-relaxed" style={{ color: themeColors.secondaryText }}>
+                      <p className="leading-relaxed" style={{ color: themeColors.darkSecondaryText }}>
                         {faq.answer}
                       </p>
                     </div>

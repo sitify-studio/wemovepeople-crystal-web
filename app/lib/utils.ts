@@ -151,6 +151,10 @@ export function sectionTextCssVar(tone: SectionSurfaceTone = 'dark') {
 export const TIPTAP_INHERIT =
   'max-w-none text-inherit [&_a]:text-[var(--wb-primary)] [&_a]:underline-offset-4 [&_a:hover]:opacity-90 [&_em]:text-inherit [&_li]:text-inherit [&_p]:mt-0 [&_p]:text-inherit [&_strong]:text-inherit'
 
+/** Tiptap in footer — all copy and links stay white, no hover color shift */
+export const TIPTAP_ON_DARK =
+  'max-w-none text-white [&_a]:!text-white [&_a]:underline [&_a]:underline-offset-4 [&_em]:text-white [&_li]:text-white [&_p]:mt-0 [&_p]:text-white [&_strong]:text-white'
+
 /**
  * Normalizes NEXT_PUBLIC_API_BASE_URL to `{origin}/api` (see IMAGE_URL_GUIDE /
  * PUBLIC_ROUTES_DOCUMENTATION — files are served at /api/uploads/*).

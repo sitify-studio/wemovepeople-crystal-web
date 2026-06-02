@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
-import { useThemeFonts } from '@/app/hooks/useTheme';
+import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { getBrandName, getHeaderNavItems } from '@/app/lib/siteContent';
 import { getImageSrc, cn } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
@@ -29,7 +29,7 @@ const headerStyles = `
   }
 
   .royal-header-scrolled {
-    background: rgba(255, 255, 255, 0.92);
+    background: color-mix(in srgb, var(--wb-page-bg) 92%, transparent);
     box-shadow: 0 8px 32px rgba(var(--theme-primary-rgb), 0.08);
     border-bottom-color: rgba(var(--theme-primary-rgb), 0.12);
   }
@@ -40,9 +40,10 @@ const headerStyles = `
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #666;
+    color: var(--wb-text-secondary);
     text-decoration: none;
     padding: 0.35rem 0;
+    white-space: nowrap;
     transition: color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
@@ -58,7 +59,7 @@ const headerStyles = `
   }
 
   .royal-nav-link:hover {
-    color: #1a1a1a;
+    color: var(--wb-text-main);
   }
 
   .royal-nav-link:hover::after {
@@ -95,15 +96,30 @@ const headerStyles = `
     color: #fff !important;
   }
 
+  .royal-header-nav {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .royal-header-nav::-webkit-scrollbar {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
 `;
 
 export const Header: React.FC = () => {
   const { site, pages } = useWebBuilder();
+  const themeColors = useThemeColors();
   const themeFonts = useThemeFonts();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const logoImage = site?.theme?.logoUrl ? getImageSrc(site.theme.logoUrl) : undefined;
   const businessName = getBrandName(site);
@@ -146,6 +162,15 @@ export const Header: React.FC = () => {
   }, [lastScrollY]);
 
   useEffect(() => {
+    if (!isMenuOpen) return;
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    document.addEventListener('keydown', onEscape);
+    return () => document.removeEventListener('keydown', onEscape);
+  }, [isMenuOpen]);
+
+  useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty('--theme-primary-color', themeData.primaryColor);
     root.style.setProperty('--theme-secondary-color', themeData.secondaryColor);
@@ -163,9 +188,15 @@ export const Header: React.FC = () => {
           isScrolled && 'royal-header-scrolled',
           !isVisible && '-translate-y-full'
         )}
-        style={{ fontFamily: themeFonts.body }}
+        style={{
+          fontFamily: themeFonts.body,
+          color: themeColors.mainText,
+          backgroundColor: isScrolled
+            ? `color-mix(in srgb, ${themeColors.pageBackground} 92%, transparent)`
+            : `color-mix(in srgb, ${themeColors.pageBackground} 88%, transparent)`,
+        }}
       >
-        <div className="mx-auto flex h-[4.75rem] w-full max-w-[90rem] items-center gap-4 px-6 lg:h-[5.25rem] lg:gap-8 lg:px-16">
+        <div className="mx-auto flex h-[4.75rem] w-full max-w-[90rem] items-center gap-3 px-4 sm:gap-4 sm:px-6 lg:h-[5.25rem] lg:gap-6 lg:px-16">
           {(logoImage || businessName) && (
             <Link
               href="/"
@@ -184,8 +215,8 @@ export const Header: React.FC = () => {
               )}
               {businessName && (
                 <span
-                  className="max-w-[10rem] text-base font-semibold leading-tight tracking-tight text-gray-900 sm:max-w-none sm:text-lg lg:text-xl"
-                  style={{ fontFamily: themeFonts.heading }}
+                  className="max-w-[9rem] text-sm font-semibold leading-tight tracking-tight sm:max-w-none sm:text-base lg:text-lg xl:text-xl"
+                  style={{ fontFamily: themeFonts.heading, color: themeColors.mainText }}
                 >
                   {businessName}
                 </span>
@@ -193,15 +224,38 @@ export const Header: React.FC = () => {
             </Link>
           )}
 
-          <nav className="hidden flex-1 items-center justify-center gap-8 lg:flex xl:gap-10" aria-label="Primary">
+          <nav
+            className="royal-header-nav hidden min-w-0 flex-1 items-center justify-center gap-4 px-2 md:flex lg:gap-6 xl:gap-8"
+            aria-label="Primary"
+          >
             {navItems.map((item) => (
-              <Link key={item.id} href={item.href} className="royal-nav-link">
+              <Link key={item.id} href={item.href} className="royal-nav-link shrink-0">
                 {item.name}
               </Link>
             ))}
           </nav>
 
-          <div className="ml-auto flex shrink-0 items-center gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border md:hidden"
+              style={{
+                borderColor: `color-mix(in srgb, ${themeColors.mainText} 18%, transparent)`,
+                color: themeColors.mainText,
+              }}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-nav-menu"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setIsMenuOpen((open) => !open)}
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
             {showCta && (
               <Link href={ctaHref} className="header-cta-button inline-flex">
                 <span className="button-text">{ctaLabel}</span>
@@ -223,6 +277,32 @@ export const Header: React.FC = () => {
             )}
           </div>
         </div>
+
+        {isMenuOpen && (
+          <nav
+            id="mobile-nav-menu"
+            className="border-t px-4 py-4 md:hidden"
+            style={{
+              borderColor: `color-mix(in srgb, ${themeColors.mainText} 12%, transparent)`,
+              backgroundColor: themeColors.pageBackground,
+            }}
+            aria-label="Mobile primary"
+          >
+            <ul className="flex flex-col gap-3">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    href={item.href}
+                    className="royal-nav-link block text-sm"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
         <div
           className="pointer-events-none absolute bottom-0 left-0 right-0 h-px opacity-60"

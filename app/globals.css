@@ -338,6 +338,10 @@ body {
 .wb-text-on-dark-secondary {
   color: var(--wb-text-on-dark-secondary);
 }
+/* Monochrome logos on dark surfaces — renders brand mark in theme on-dark text color */
+.wb-logo-on-dark {
+  filter: brightness(0) saturate(100%) invert(1);
+}
 .wb-bg-section-dark {
   background-color: var(--wb-section-bg-dark);
 }

@@ -209,30 +209,15 @@ export function splitHeaderNavItems(
   return { leftNavItems, rightNavItems };
 }
 
+/** Header nav mirrors footer Explore links (all published routes + gallery/testimonials), minus home. */
 export function getHeaderNavItems(pages?: Page[]): HeaderNavItem[] {
-  const published = getPublishedNavPages(pages);
-  const seenHrefs = new Set<string>();
-  const items: HeaderNavItem[] = [];
-
-  for (const p of published) {
-    if (isTestimonialsPage(p)) continue;
-    const href = getPageHref(p);
-    if (seenHrefs.has(href)) continue;
-    seenHrefs.add(href);
-    const item = { id: p._id, name: p.name, href };
-    if (isTestimonialsNavItem(item)) continue;
-    items.push(item);
-  }
-
-  return items
-    .filter((item) => !isTestimonialsNavItem(item))
-    .sort((a, b) => {
-    const pageA = pages?.find((p) => getPageHref(p) === a.href);
-    const pageB = pages?.find((p) => getPageHref(p) === b.href);
-    const orderA = (pageA as Page & { order?: number })?.order ?? 999;
-    const orderB = (pageB as Page & { order?: number })?.order ?? 999;
-    return orderA - orderB;
-  });
+  return getFooterNavLinks(pages)
+    .filter((link) => link.href !== '/')
+    .map((link) => ({
+      id: link.id,
+      name: link.label,
+      href: link.href,
+    }));
 }
 
 export type FooterNavLink = {
