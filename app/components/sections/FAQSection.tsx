@@ -136,19 +136,19 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
                     style={{
                       background: isOpen
                         ? `linear-gradient(135deg, ${themeColors.primaryButton}, ${themeColors.hoverActive})`
-                        : themeColors.cardBackgroundLight,
-                      color: isOpen ? '#ffffff' : themeColors.mainText,
+                        : themeColors.cardBackgroundDark,
+                      color: '#ffffff',
                     }}
                     onMouseEnter={(e) => {
                       if (!isOpen) {
-                        e.currentTarget.style.backgroundColor = themeColors.sectionBackgroundLight;
-                        e.currentTarget.style.color = themeColors.mainText;
+                        e.currentTarget.style.backgroundColor = themeColors.sectionBackgroundDark;
+                        e.currentTarget.style.color = '#ffffff';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isOpen) {
-                        e.currentTarget.style.background = themeColors.cardBackgroundLight;
-                        e.currentTarget.style.color = themeColors.mainText;
+                        e.currentTarget.style.background = themeColors.cardBackgroundDark;
+                        e.currentTarget.style.color = '#ffffff';
                       }
                     }}
                   >
@@ -178,16 +178,16 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
                     style={{
                       maxHeight: isOpen ? '500px' : '0px',
                       opacity: isOpen ? 1 : 0,
-                      backgroundColor: themeColors.cardBackgroundLight,
+                      backgroundColor: themeColors.cardBackgroundDark,
                     }}
                   >
                     <div
                       className="px-6 py-5 border-l-4"
                       style={{
-                        borderColor: `color-mix(in srgb, ${themeColors.mainText} 20%, transparent)`,
+                        borderColor: 'color-mix(in srgb, #ffffff 25%, transparent)',
                       }}
                     >
-                      <p className="leading-relaxed" style={{ color: themeColors.secondaryText }}>
+                      <p className="leading-relaxed text-white">
                         {faq.answer}
                       </p>
                     </div>
