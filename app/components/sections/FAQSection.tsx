@@ -58,7 +58,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqSection, className })
     <section
       ref={sectionRef}
       className={cn(SECTION_PY, 'relative overflow-hidden', className)}
-      style={{ backgroundColor: themeColors.sectionBackground, fontFamily: themeFonts.body }}
+      style={{ backgroundColor: themeColors.pageBackground, fontFamily: themeFonts.body }}
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-5">

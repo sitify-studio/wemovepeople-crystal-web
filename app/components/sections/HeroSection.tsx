@@ -266,7 +266,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ hero, page, className 
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <section
         className={cn(
-          'relative overflow-hidden min-h-screen bg-white -mt-[4.25rem] lg:-mt-[4.75rem]',
+          'relative overflow-hidden min-h-screen bg-white -mt-[4.75rem] lg:-mt-[5.25rem]',
           className
         )}
       >

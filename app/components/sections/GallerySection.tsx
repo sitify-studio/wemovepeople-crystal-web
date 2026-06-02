@@ -7,7 +7,6 @@ import type { Page } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
 import { cn, getImageSrc, SECTION_PY } from '@/app/lib/utils';
-import { tiptapToText } from '@/app/lib/seo';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 
 interface GallerySectionProps {
@@ -17,7 +16,6 @@ interface GallerySectionProps {
 
 type GalleryImage = {
   id: string;
-  title: string;
   altText: string;
   imageUrl: string;
 };
@@ -40,16 +38,11 @@ export const GallerySection: React.FC<GallerySectionProps> = ({
     return (
       gallerySection?.images
         ?.filter((img) => img?.url)
-        .map((img, index) => {
-          const caption = tiptapToText(img.caption);
-          const alt = img.altText?.trim() || caption || 'Gallery image';
-          return {
-            id: `gallery-${index}`,
-            title: caption || alt,
-            altText: alt,
-            imageUrl: getImageSrc(img.url),
-          };
-        }) ?? []
+        .map((img, index) => ({
+          id: `gallery-${index}`,
+          altText: img.altText?.trim() || 'Gallery image',
+          imageUrl: getImageSrc(img.url),
+        })) ?? []
     );
   }, [gallerySection?.images]);
 
@@ -170,14 +163,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({
                   priority
                 />
               </div>
-              {selectedImage.title && (
-                <p
-                  className="border-t border-gray-100 px-5 py-4 text-center text-sm text-gray-600"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  {selectedImage.title}
-                </p>
-              )}
             </div>
 
             <div className="flex gap-3 overflow-x-auto pb-1 lg:w-72 lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0 lg:max-h-[min(560px,62vh)]">
@@ -208,16 +193,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({
                       className="object-cover"
                       sizes="(max-width: 1024px) 120px, 288px"
                     />
-                    <div
-                      className={cn(
-                        'absolute inset-0 flex items-end justify-center bg-gradient-to-t from-black/50 to-transparent p-2 transition-opacity duration-300',
-                        isActive ? 'opacity-100' : 'opacity-0 lg:group-hover:opacity-100'
-                      )}
-                    >
-                      <span className="line-clamp-2 text-center text-[10px] font-medium uppercase tracking-wider text-white">
-                        {image.title}
-                      </span>
-                    </div>
                   </button>
                 );
               })}

@@ -212,20 +212,31 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-6">
           <div className="lg:col-span-2">
-            {logoImage && (
-              <div
-                className={`mb-6 transition-all duration-1000 ${
+            {(logoImage || businessName) && (
+              <Link
+                href="/"
+                className={`mb-6 inline-flex flex-col items-start gap-3 no-underline transition-all duration-1000 sm:flex-row sm:items-center sm:gap-4 ${
                   footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
               >
-                <Image
-                  src={logoImage}
-                  alt="Logo"
-                  width={280}
-                  height={88}
-                  className="h-16 w-auto hover:scale-105 transition-transform duration-300 md:h-20"
-                />
-              </div>
+                {logoImage && (
+                  <Image
+                    src={logoImage}
+                    alt={businessName ? `${businessName} logo` : 'Logo'}
+                    width={320}
+                    height={100}
+                    className="h-20 w-auto transition-transform duration-300 hover:scale-105 md:h-24 lg:h-28"
+                  />
+                )}
+                {businessName && (
+                  <span
+                    className="text-xl font-light leading-tight tracking-wide md:text-2xl lg:text-3xl"
+                    style={{ color: themeData.textOnDark }}
+                  >
+                    {businessName}
+                  </span>
+                )}
+              </Link>
             )}
 
             {showFooterDescription && (

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { useThemeFonts } from '@/app/hooks/useTheme';
-import { getHeaderNavItems } from '@/app/lib/siteContent';
+import { getBrandName, getHeaderNavItems } from '@/app/lib/siteContent';
 import { getImageSrc, cn } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
 import { resolvePrimaryCta } from '@/app/components/ui/made';
@@ -106,6 +106,7 @@ export const Header: React.FC = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const logoImage = site?.theme?.logoUrl ? getImageSrc(site.theme.logoUrl) : undefined;
+  const businessName = getBrandName(site);
   const phoneNumber = site?.business?.phone?.trim();
 
   const themeData = useMemo(() => {
@@ -164,17 +165,31 @@ export const Header: React.FC = () => {
         )}
         style={{ fontFamily: themeFonts.body }}
       >
-        <div className="mx-auto flex h-[4.25rem] w-full max-w-[90rem] items-center gap-4 px-6 lg:h-[4.75rem] lg:gap-8 lg:px-16">
-          {logoImage && (
-            <Link href="/" className="flex shrink-0 items-center no-underline" aria-label="Home">
-              <OptimizedImage
-                src={logoImage}
-                alt="Logo"
-                width={180}
-                height={56}
-                priority
-                className="h-11 w-auto max-h-[3.25rem] object-contain sm:h-12 lg:h-14"
-              />
+        <div className="mx-auto flex h-[4.75rem] w-full max-w-[90rem] items-center gap-4 px-6 lg:h-[5.25rem] lg:gap-8 lg:px-16">
+          {(logoImage || businessName) && (
+            <Link
+              href="/"
+              className="flex shrink-0 items-center gap-3 no-underline sm:gap-4"
+              aria-label={businessName ? `${businessName} home` : 'Home'}
+            >
+              {logoImage && (
+                <OptimizedImage
+                  src={logoImage}
+                  alt={businessName ? `${businessName} logo` : 'Logo'}
+                  width={240}
+                  height={72}
+                  priority
+                  className="h-14 w-auto max-h-[4rem] object-contain sm:h-16 lg:h-[4.25rem]"
+                />
+              )}
+              {businessName && (
+                <span
+                  className="max-w-[10rem] text-base font-semibold leading-tight tracking-tight text-gray-900 sm:max-w-none sm:text-lg lg:text-xl"
+                  style={{ fontFamily: themeFonts.heading }}
+                >
+                  {businessName}
+                </span>
+              )}
             </Link>
           )}
 
