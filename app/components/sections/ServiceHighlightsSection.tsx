@@ -3,7 +3,7 @@
 import React, { useMemo, useEffect, useRef } from 'react';
 import { Page } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors } from '@/app/hooks/useTheme';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
@@ -109,7 +109,7 @@ export const ServiceHighlightsSection: React.FC<ServiceHighlightsSectionProps> =
   return (
     <section
       ref={sectionRef}
-      className={cn('relative py-3 md:py-8 lg:py-12 overflow-hidden', className)}
+      className={cn('relative overflow-hidden', SECTION_PY, className)}
       style={{ backgroundColor: themeColors.sectionBackground || '#FFFFFF' }}
     >
       <div className="max-w-[1800px] mx-auto px-8 md:px-16 lg:px-24">

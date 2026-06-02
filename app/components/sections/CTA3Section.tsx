@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { Page } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { getImageSrc, cn } from '@/app/lib/utils';
+import { getImageSrc, cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 
 interface CTA3SectionProps {
@@ -46,7 +46,7 @@ export const CTA3Section: React.FC<CTA3SectionProps> = ({ cta3Section, className
       />
 
       <div className="relative container mx-auto px-4">
-        <div className="py-16 lg:py-24">
+        <div className={SECTION_PY}>
           <div className="max-w-4xl">
             {safeCta.title && (
               <div

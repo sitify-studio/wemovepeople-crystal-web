@@ -6,7 +6,7 @@ import Link from 'next/link';
 import type { Page } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn, getImageSrc } from '@/app/lib/utils';
+import { cn, getImageSrc, SECTION_PY } from '@/app/lib/utils';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 type CtaSectionInput = NonNullable<Page['ctaSection']> & {
   subtitle?: unknown;
@@ -218,7 +218,8 @@ export const CTASection: React.FC<CTASectionProps> = ({ ctaSection, className })
       <section
         ref={sectionRef}
         className={cn(
-          'relative flex min-h-[600px] items-center overflow-hidden py-20',
+          'relative flex min-h-[600px] items-center overflow-hidden',
+          SECTION_PY,
           className
         )}
         style={{ perspective: '1000px' }}

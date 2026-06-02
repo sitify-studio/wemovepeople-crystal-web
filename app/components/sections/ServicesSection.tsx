@@ -6,7 +6,7 @@ import Link from 'next/link';
 import type { Page, Service } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn, getImageSrc } from '@/app/lib/utils';
+import { cn, getImageSrc, SECTION_PY } from '@/app/lib/utils';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 import { tiptapToText } from '@/app/lib/seo';
 
@@ -70,7 +70,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   return (
     <section
       id="services"
-      className={cn('relative bg-white py-12 sm:py-16 md:py-20 lg:py-24', className)}
+      className={cn('relative bg-white', SECTION_PY, className)}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-12">

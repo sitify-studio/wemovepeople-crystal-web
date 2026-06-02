@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Page } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { getImageSrc, cn } from '@/app/lib/utils';
+import { getImageSrc, cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 
 interface CTA5SectionProps {
@@ -26,7 +26,7 @@ export const CTA5Section: React.FC<CTA5SectionProps> = ({ cta5Section, className
 
   return (
     <section
-      className={cn('relative overflow-hidden py-24 md:py-32', className)}
+      className={cn('relative overflow-hidden', SECTION_PY, className)}
       style={{
         backgroundColor: safe.backgroundColor || '#030306',
         backgroundImage: bgUrl ? `url(${bgUrl})` : undefined,

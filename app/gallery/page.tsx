@@ -16,7 +16,7 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#030306]">
       <main className="flex-1">
-        {!loading && galleryPage && (
+        {galleryPage && (
           <>
             <HeroSection hero={galleryPage.hero} />
             <GallerySection gallerySection={galleryPage.gallerySection} />

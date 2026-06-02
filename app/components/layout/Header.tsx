@@ -129,7 +129,7 @@ export const Header: React.FC = () => {
   const showCta = Boolean(phoneNumber || primaryCta);
 
   useEffect(() => {
-    document.documentElement.classList.remove('hero-intro-active', 'preloader-active');
+    document.documentElement.classList.remove('hero-intro-active');
   }, []);
 
   useEffect(() => {

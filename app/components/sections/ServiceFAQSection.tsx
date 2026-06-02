@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { Plus, Minus } from 'lucide-react';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
@@ -29,7 +29,7 @@ export const ServiceFAQSection: React.FC<ServiceFAQSectionProps> = ({ service })
 
     return (
         <section
-            className="py-24 md:py-32 lg:py-48"
+            className={SECTION_PY}
             style={{ backgroundColor: themeColors.pageBackground, fontFamily: themeFonts.body }}
         >
             <div className="container mx-auto px-6 lg:px-12">

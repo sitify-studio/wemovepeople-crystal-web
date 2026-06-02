@@ -6,7 +6,7 @@ import Image from 'next/image';
 import type { Page } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn, getImageSrc } from '@/app/lib/utils';
+import { cn, getImageSrc, SECTION_PY } from '@/app/lib/utils';
 import { tiptapToText } from '@/app/lib/seo';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 
@@ -78,7 +78,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({
     <section
       id="gallery"
       className={cn(
-        'relative overflow-hidden bg-white py-16 sm:py-20 md:py-24 lg:py-28',
+        'relative overflow-hidden bg-white',
+        SECTION_PY,
         className
       )}
     >

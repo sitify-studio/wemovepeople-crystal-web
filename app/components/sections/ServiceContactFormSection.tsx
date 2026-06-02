@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Page, BusinessHours } from '@/app/lib/types';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { ContactSideForm } from '@/app/components/ui/ContactSideForm';
 
@@ -66,7 +66,7 @@ export const ServiceContactFormSection: React.FC<ServiceContactFormSectionProps>
 
   return (
     <section 
-      className="py-24 md:py-32 lg:py-40 flex flex-col gap-32 lg:gap-48" 
+      className={cn(SECTION_PY, 'flex flex-col gap-16 lg:gap-20')} 
       style={{ backgroundColor: themeColors.pageBackground, fontFamily: themeFonts.body }}
     >
       

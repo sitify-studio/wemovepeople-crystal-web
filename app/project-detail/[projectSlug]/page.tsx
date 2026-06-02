@@ -8,7 +8,7 @@ import { projectApi } from '@/app/lib/api';
 import { Project } from '@/app/lib/types';
 import { Footer } from '@/app/components/layout/Footer';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { getImageSrc } from '@/app/lib/utils';
+import { getImageSrc, SECTION_PY } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { SeoHead } from '@/app/components/ui/SeoHead';
@@ -50,9 +50,7 @@ export default function ProjectDetailPage() {
     if (!siteLoading) loadProjectPage();
   }, [site, siteLoading, projectSlug]);
 
-  if (siteLoading || loading) {
-    return <div className="min-h-screen flex items-center justify-center animate-pulse uppercase tracking-[0.3em] text-xs" style={{ backgroundColor: themeColors.pageBackground }}>Loading Experience...</div>;
-  }
+  if ((siteLoading || loading) && !project) return null;
 
   if (error || !project) {
     return <div className="min-h-screen flex items-center justify-center text-red-500 uppercase tracking-widest">Project Not Found</div>;
@@ -177,7 +175,7 @@ export default function ProjectDetailPage() {
 
         {/* RELATED PROJECTS */}
         {otherProjects.length > 0 && (
-          <section className="py-24 lg:py-32" style={{ backgroundColor: `rgba(0, 0, 0, 0.02)` }}>
+          <section className={SECTION_PY} style={{ backgroundColor: `rgba(0, 0, 0, 0.02)` }}>
             <div className="container mx-auto px-6 lg:px-12">
               <h3 className="text-[11px] uppercase tracking-[0.6em] text-center mb-16 opacity-40 text-black">
                 Related Works

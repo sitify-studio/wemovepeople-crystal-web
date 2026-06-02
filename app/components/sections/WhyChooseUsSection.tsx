@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import type { Page } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { tiptapToText } from '@/app/lib/seo';
 import { useScrollAnimation, useStaggeredAnimation } from '@/app/hooks/useScrollAnimation';
 
@@ -431,7 +431,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
       
       <section
         id="service-highlights"
-        className={cn('relative overflow-hidden py-24 bg-white', className)}
+        className={cn('relative overflow-hidden bg-white', SECTION_PY, className)}
         style={{
           '--theme-primary-color': theme.primaryColor,
           '--theme-secondary-color': theme.secondaryColor,

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import React from 'react';
 import type { Page } from '@/app/lib/types';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { getPageHref } from '@/app/lib/siteContent';
 
@@ -89,7 +89,7 @@ export function HomeSection({
   return (
     <section
       id={id}
-      className={cn('relative overflow-hidden py-16 md:py-24 lg:py-28', className)}
+      className={cn('relative overflow-hidden', SECTION_PY, className)}
       style={{
         backgroundColor,
         color: colors.mainText,

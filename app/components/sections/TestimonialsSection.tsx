@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import type { Page } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { tiptapToText } from '@/app/lib/seo';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -181,7 +181,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     <section 
       id="testimonials" 
       ref={sectionRef}
-      className={cn('py-16 sm:py-20 md:py-24 lg:py-32 relative overflow-hidden', className)}
+      className={cn(SECTION_PY, 'relative overflow-hidden', className)}
       style={{
         background: `linear-gradient(135deg, ${primaryColor}, ${secondaryColor})`
       }}

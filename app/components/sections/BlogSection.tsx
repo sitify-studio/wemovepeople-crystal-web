@@ -5,11 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Page } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { getImageSrc, cn } from '@/app/lib/utils';
+import { getImageSrc, cn, SECTION_PY } from '@/app/lib/utils';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
-import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
-import { CardLoader } from '@/app/components/ui/SkeletonLoader';
-import { tiptapToText } from '@/app/lib/seo';
+import { hasFooterDescriptionContent } from '@/app/lib/siteContent';
 
 type BlogSectionInput = NonNullable<Page['blogSection']> & {
   heading?: unknown;
@@ -25,12 +23,6 @@ function pickSectionField(
   const value = section[primary] ?? alt;
   if (value == null || value === '') return undefined;
   return value;
-}
-
-function hasTiptapContent(content: unknown): boolean {
-  if (content == null || content === '') return false;
-  if (typeof content === 'object') return Boolean(tiptapToText(content));
-  return Boolean(String(content).trim());
 }
 
 function resolvePostImageRaw(post: {
@@ -104,7 +96,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
     if (!current && !fallback) return undefined;
 
     return {
-      enabled: current?.enabled ?? fallback?.enabled ?? false,
+      enabled: current?.enabled ?? fallback?.enabled ?? true,
       postsToShow: current?.postsToShow ?? fallback?.postsToShow ?? 3,
       showExcerpt: current?.showExcerpt ?? fallback?.showExcerpt ?? true,
       showDate: current?.showDate ?? fallback?.showDate ?? true,
@@ -117,8 +109,8 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
 
   const titleContent = sectionData?.title;
   const descriptionContent = sectionData?.description;
-  const hasTitle = hasTiptapContent(titleContent);
-  const hasDescription = hasTiptapContent(descriptionContent);
+  const hasTitle = hasFooterDescriptionContent(titleContent);
+  const hasDescription = hasFooterDescriptionContent(descriptionContent);
 
   const theme = useMemo(() => {
     const t = site?.theme;
@@ -128,11 +120,6 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
     };
   }, [site?.theme]);
 
-  const { ref: titleRef, isVisible: titleVisible } =
-    useScrollAnimation<HTMLHeadingElement>({ threshold: 0.2 });
-  const { ref: descRef, isVisible: descVisible } =
-    useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
-
   if (!sectionData?.enabled) return null;
 
   const count = Math.min(Math.max(sectionData.postsToShow || 3, 1), 12);
@@ -140,24 +127,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
   const showExcerpt = Boolean(sectionData.showExcerpt);
   const showDate = Boolean(sectionData.showDate);
 
-  if (loading && blogPosts.length === 0) {
-    return (
-      <section className={cn('relative bg-white py-16 sm:py-20', className)} id="blog">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-12">
-            <div className="aspect-[16/10] animate-pulse rounded-2xl bg-gray-100 lg:col-span-7" />
-            <div className="space-y-6 lg:col-span-5">
-              {[1, 2].map((i) => (
-                <div key={i} className="rounded-2xl border border-gray-100 p-4">
-                  <CardLoader />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  if (loading && blogPosts.length === 0) return null;
 
   if (displayPosts.length === 0 && !hasTitle && !hasDescription) {
     return null;
@@ -168,7 +138,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
   return (
     <section
       id="blog"
-      className={cn('relative overflow-hidden bg-white py-16 sm:py-20 md:py-24 lg:py-28', className)}
+      className={cn('relative overflow-hidden bg-white', SECTION_PY, className)}
     >
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -193,11 +163,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
 
           {hasTitle && (
             <h2
-              ref={titleRef}
-              className={cn(
-                'mx-auto max-w-3xl text-3xl font-light tracking-tight text-gray-900 transition-all duration-700 sm:text-4xl md:text-5xl',
-                titleVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-              )}
+              className="mx-auto max-w-3xl text-3xl font-light tracking-tight text-gray-900 sm:text-4xl md:text-5xl"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               <TiptapRenderer content={titleContent} as="inline" />
@@ -205,13 +171,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ blogSection, className
           )}
 
           {hasDescription && (
-            <div
-              ref={descRef}
-              className={cn(
-                'mx-auto mt-6 max-w-2xl text-base text-gray-600 transition-all duration-700 delay-150 sm:text-lg',
-                descVisible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
-              )}
-            >
+            <div className="mx-auto mt-6 max-w-2xl text-base text-gray-600 sm:text-lg">
               <TiptapRenderer content={descriptionContent} as="inline" />
             </div>
           )}

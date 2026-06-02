@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Page, Project } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn, getImageSrc } from '@/app/lib/utils';
+import { cn, getImageSrc, SECTION_PY } from '@/app/lib/utils';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 import { tiptapToText } from '@/app/lib/seo';
@@ -160,7 +160,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   return (
     <section
       id="projects"
-      className={cn('relative overflow-hidden bg-white py-16 sm:py-20 md:py-24 lg:py-28', className)}
+      className={cn('relative overflow-hidden bg-white', SECTION_PY, className)}
     >
       <div className="pointer-events-none absolute inset-0 opacity-60">
         <div

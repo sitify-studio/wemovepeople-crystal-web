@@ -127,19 +127,6 @@ body {
   background-color: var(--wb-scrollbar-thumb-hover);
 }
 
-/* During preloader: keep scrollbar space, but hide scrollbar visuals */
-html.preloader-active {
-  scrollbar-color: transparent transparent;
-}
-
-html.preloader-active::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-html.preloader-active::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-
 .container-main {
   max-width: 80rem;
   margin-left: auto;
@@ -163,14 +150,14 @@ html.preloader-active::-webkit-scrollbar-thumb {
 }
 
 .section {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 @media (min-width: 1024px) {
   .section {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 

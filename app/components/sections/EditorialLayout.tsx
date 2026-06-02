@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useHomeTheme } from '@/app/components/ui/made';
 
 export function EditorialBracket({
@@ -42,7 +42,8 @@ export function EditorialSection({
     <section
       id={id}
       className={cn(
-        'relative z-10 w-full overflow-hidden py-20 lg:py-28',
+        'relative z-10 w-full overflow-hidden',
+        SECTION_PY,
         bordered && 'border-t',
         className,
       )}

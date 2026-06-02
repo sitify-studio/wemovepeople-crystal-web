@@ -5,6 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/** Shared vertical padding for stacked page sections. */
+export const SECTION_PY = 'py-8 sm:py-10 md:py-12'
+
 /** Site-builder section background: dark luxury vs light editorial (see `wb-surface-lux` / `wb-surface-light` in globals.css). */
 export type SectionSurfaceTone = 'light' | 'dark'
 

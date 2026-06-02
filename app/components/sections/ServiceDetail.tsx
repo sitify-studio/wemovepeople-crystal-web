@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { CTASection } from './CTASection';
@@ -61,7 +61,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({
             <ServiceBanner service={service} />
 
             {/* Main Content Architecture */}
-            <main className="relative py-20 lg:py-32">
+            <main className={cn('relative', SECTION_PY)}>
                 <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
                     <div className="grid lg:grid-cols-12 gap-16 xl:gap-24">
                         

@@ -10,13 +10,13 @@ import { CompanyDetailSection } from '@/app/components/sections/CompanyDetailSec
 import { CTA2Section } from '@/app/components/sections/CTA2Section';
 
 export default function AboutPage() {
-  const { pages, loading } = useWebBuilder();
+  const { pages } = useWebBuilder();
   const aboutPage = pages.find((p: Page) => p.pageType === 'about');
 
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
-        {!loading && aboutPage && (
+        {aboutPage && (
           <>
             <HeroSection hero={aboutPage.hero} />
             <AboutSection aboutSection={aboutPage.aboutSection} />

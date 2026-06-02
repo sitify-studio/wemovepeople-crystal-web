@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors } from '@/app/hooks/useTheme';
 
 export const Highlights: React.FC<{ highlights: any; className?: string }> = ({ highlights, className }) => {
@@ -12,7 +12,7 @@ export const Highlights: React.FC<{ highlights: any; className?: string }> = ({ 
   if (!items.length) return null;
 
   return (
-    <section className={cn('py-32', className)} style={{ backgroundColor: themeColors.pageBackground }}>
+    <section className={cn(SECTION_PY, className)} style={{ backgroundColor: themeColors.pageBackground }}>
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           

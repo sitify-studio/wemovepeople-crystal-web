@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Page } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
-import { getImageSrc, cn, TIPTAP_INHERIT } from '@/app/lib/utils';
+import { getImageSrc, cn, TIPTAP_INHERIT, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors, useThemeFonts, useSectionContrast } from '@/app/hooks/useTheme';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
@@ -100,7 +100,8 @@ export const CTA2Section: React.FC<CTA2SectionProps> = ({ cta2Section, className
     <section
       ref={sectionRef}
       className={cn(
-        'relative isolate overflow-hidden py-20 md:py-28 lg:py-32',
+        'relative isolate overflow-hidden',
+        SECTION_PY,
         !hasBgImage && 'wb-surface-light wb-hairline-t-light',
         className
       )}

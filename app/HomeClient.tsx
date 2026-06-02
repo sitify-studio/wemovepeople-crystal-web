@@ -30,22 +30,7 @@ export default function HomeClient() {
     body: site?.theme?.bodyFont,
   };
 
-  if (loading && !site) {
-    return (
-      <div 
-        className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: themeColors.pageBackground }}
-      >
-        <div 
-          className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2"
-          style={{ 
-            borderTopColor: themeColors.primaryButton,
-            borderBottomColor: themeColors.primaryButton
-          }}
-        ></div>
-      </div>
-    );
-  }
+  if (loading) return null;
 
   if (error && !site) {
     return (
@@ -84,34 +69,8 @@ export default function HomeClient() {
   }
 
   const homePage = pages.find((p: Page) => p.pageType === 'home');
-  const displayPage = homePage;
 
-  if (!displayPage) {
-    return (
-      <div 
-        className="min-h-screen flex flex-col items-center justify-center p-4"
-        style={{ backgroundColor: themeColors.pageBackground }}
-      >
-        <h2 
-          className="text-2xl font-bold mb-4"
-          style={{ 
-            color: themeColors.mainText,
-            fontFamily: themeFonts.heading
-          }}
-        >
-          No Home Page Found
-        </h2>
-        <p 
-          style={{ 
-            color: themeColors.secondaryText,
-            fontFamily: themeFonts.body
-          }}
-        >
-          Please create a page with type &quot;home&quot; in the site builder.
-        </p>
-      </div>
-    );
-  }
+  if (!homePage) return null;
 
   return (
     <div
@@ -124,28 +83,28 @@ export default function HomeClient() {
     >
 
       <main>
-        <HeroSection hero={displayPage.hero} page={displayPage} />
-        <AboutSection aboutSection={displayPage.aboutSection} page={displayPage} />
+        <HeroSection hero={homePage.hero} page={homePage} />
+        <AboutSection aboutSection={homePage.aboutSection} page={homePage} />
         <ServicesSection
-          servicesSection={displayPage.servicesSection}
-          companyDetailSection={displayPage.companyDetailSection}
-          ctaSection={displayPage.ctaSection}
-          page={displayPage}
+          servicesSection={homePage.servicesSection}
+          companyDetailSection={homePage.companyDetailSection}
+          ctaSection={homePage.ctaSection}
+          page={homePage}
         />
-        <CompanyDetailSection companyDetailSection={displayPage.companyDetailSection} />
-        <CTASection ctaSection={displayPage.ctaSection} />
-        <BlogSection blogSection={displayPage.blogSection} />
+        <CompanyDetailSection companyDetailSection={homePage.companyDetailSection} />
+        <CTASection ctaSection={homePage.ctaSection} />
+        <BlogSection blogSection={homePage.blogSection} />
         <ProjectsSection
-          projectSection={displayPage.projectSection}
-          projectsSection={displayPage.projectsSection}
+          projectSection={homePage.projectSection}
+          projectsSection={homePage.projectsSection}
           projectsLimit={3}
         />
-        <GallerySection gallerySection={displayPage.gallerySection} />
-        <WhyChooseUsSection whyChooseUsSection={displayPage.whyChooseUsSection} />
-        <FAQSection faqSection={displayPage.faqSection} />
-        <TestimonialsSection testimonialsSection={displayPage.testimonialsSection} />
-        <ServingAreasSection servingAreasSection={displayPage.servingAreasSection} />
-        <ContactSection contactSection={displayPage.contactSection} />
+        <GallerySection gallerySection={homePage.gallerySection} />
+        <WhyChooseUsSection whyChooseUsSection={homePage.whyChooseUsSection} />
+        <FAQSection faqSection={homePage.faqSection} />
+        <TestimonialsSection testimonialsSection={homePage.testimonialsSection} />
+        <ServingAreasSection servingAreasSection={homePage.servingAreasSection} />
+        <ContactSection contactSection={homePage.contactSection} />
       </main>
       <Footer />
     </div>

@@ -8,7 +8,7 @@ import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { Footer } from '@/app/components/layout/Footer';
 import { BlogPost } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { getImageSrc } from '@/app/lib/utils';
+import { getImageSrc, SECTION_PY } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { SeoHead } from '@/app/components/ui/SeoHead';
@@ -51,9 +51,7 @@ export default function BlogPostPage() {
         if (!siteLoading) loadPost();
     }, [site, postSlug, siteLoading]);
 
-    if (siteLoading || loading) {
-        return <div className="min-h-screen flex items-center justify-center animate-pulse uppercase tracking-[0.3em] text-xs">Loading Perspective...</div>;
-    }
+    if ((siteLoading || loading) && !post) return null;
 
     if (error || !post) {
         return <div className="min-h-screen flex items-center justify-center text-red-500 uppercase tracking-widest">Entry Not Found</div>;
@@ -160,7 +158,7 @@ export default function BlogPostPage() {
 
                 {/* RELATED ARTICLES */}
                 {otherPosts.length > 0 && (
-                    <section className="py-24 lg:py-32" style={{ backgroundColor: `rgba(0, 0, 0, 0.02)` }}>
+                    <section className={SECTION_PY} style={{ backgroundColor: `rgba(0, 0, 0, 0.02)` }}>
                         <div className="container mx-auto px-6 lg:px-12">
                             <h3 className="text-[11px] uppercase tracking-[0.6em] text-center mb-16 opacity-40 text-black" style={{ fontFamily: themeFonts.heading }}>
                                 More Blogs

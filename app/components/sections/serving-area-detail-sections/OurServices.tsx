@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { getImageSrc, cn } from '@/app/lib/utils';
+import { getImageSrc, cn, SECTION_PY } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
@@ -36,7 +36,7 @@ export const OurServices: React.FC<OurServicesProps> = ({ services, className })
 
   return (
     <section 
-      className={cn('py-24 lg:py-32', className)}
+      className={cn(SECTION_PY, className)}
       style={{ backgroundColor: themeColors.pageBackground }}
     >
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl">

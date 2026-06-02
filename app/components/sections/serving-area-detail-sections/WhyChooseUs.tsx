@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 
 interface WhyChooseUsProps {
@@ -24,7 +24,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ whyChooseUs, className
 
   return (
     <section 
-      className={cn('py-20 lg:py-32', className)} 
+      className={cn(SECTION_PY, className)} 
       style={{ backgroundColor: themeColors.pageBackground || '#F5F2ED' }}
     >
       <div className="container mx-auto px-6 lg:px-12">

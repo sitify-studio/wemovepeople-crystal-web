@@ -163,18 +163,29 @@ const renderMarks = (text: React.ReactNode, marks?: TiptapMark[]): React.ReactNo
         return <s key={idx}>{acc}</s>;
       case 'code':
         return <code key={idx} className="bg-gray-100 px-1 rounded text-sm">{acc}</code>;
-      case 'link':
+      case 'link': {
+        const rawHref = (mark.attrs?.href || '').trim();
+        const href =
+          !rawHref || rawHref === '#'
+            ? '#'
+            : /^(https?:\/\/|\/|mailto:|tel:|#)/i.test(rawHref)
+              ? rawHref
+              : `https://${rawHref}`;
+        const target = mark.attrs?.target || '_self';
         return (
-          <a 
+          <a
             key={idx}
-            href={mark.attrs?.href || '#'} 
-            target={mark.attrs?.target || '_self'}
-            rel={mark.attrs?.rel || undefined}
+            href={href}
+            target={target}
+            rel={
+              mark.attrs?.rel || (target === '_blank' ? 'noopener noreferrer' : undefined)
+            }
             className="hover:underline"
           >
             {acc}
           </a>
         );
+      }
       case 'underline':
         return <u key={idx}>{acc}</u>;
       default:
@@ -323,90 +334,86 @@ const blockWrapperClass = (className?: string) =>
     ? cn('max-w-none', className)
     : cn('prose prose-gray max-w-none', className);
 
-export const TiptapRenderer: React.FC<TiptapRendererProps> = ({ 
-  content, 
-  className,
-  as = 'div'
-}) => {
-  // Handle null/undefined
-  if (content == null) return null;
-  
-  // Handle plain text strings directly (not Tiptap JSON)
-  if (typeof content === 'string') {
-    const trimmed = content.trim();
-    // If it looks like JSON, try to parse it
-    if ((trimmed.startsWith('{') || trimmed.startsWith('[')) && 
-        (trimmed.endsWith('}') || trimmed.endsWith(']'))) {
-      try {
-        const parsed = JSON.parse(trimmed);
-        const normalized = normalizeNode(parsed);
-        if (!normalized) return null;
-        const rendered = renderNode(normalized);
-        if (as === 'inline') {
-          return <span className={className}>{rendered}</span>;
-        }
-        return (
-          <div className={blockWrapperClass(className)}>
-            {rendered}
-          </div>
-        );
-      } catch {
-        // JSON parse failed, render as plain text
-        return <span className={className}>{trimmed}</span>;
-      }
-    }
-    // Plain text - render directly
-    return <span className={className}>{trimmed}</span>;
-  }
-  
-  // Normalize and render Tiptap JSON content
-  const normalized = normalizeNode(content);
-  
-  if (!normalized) return null;
-  
-  // If normalized is a string, render it directly
+/** Inline rendering: unwrap doc/paragraph nodes so no block <p> is nested inside phrasing parents. */
+function renderInlineContent(normalized: unknown, className?: string): React.ReactNode {
+  if (normalized == null) return null;
   if (typeof normalized === 'string') {
     return <span className={className}>{normalized}</span>;
   }
-  
-  // If it's a doc with single paragraph/heading, render inline-friendly ONLY when as="inline"
-  if (as === 'inline' && normalized.type === 'doc' && Array.isArray(normalized.content) && normalized.content.length > 0) {
-    const firstNode = normalized.content[0];
-    
-    // Single heading - render just the heading content
-    if (normalized.content.length === 1 && firstNode?.type === 'heading') {
-      const children = firstNode.content?.map((child: any, i: number) => renderNode(child, i));
-      return <span className={className}>{children}</span>;
-    }
-    
-    // Single paragraph - render just the paragraph content
-    if (normalized.content.length === 1 && firstNode?.type === 'paragraph') {
-      const children = firstNode.content?.map((child: any, i: number) => renderNode(child, i));
-      return <span className={className}>{children}</span>;
-    }
-    
-    // For inline mode with multiple nodes, render all nodes but without block-level formatting
-    const children = normalized.content.map((child: any, i: number) => {
-      if (child.type === 'heading') {
-        return child.content?.map((textChild: any, j: number) => renderNode(textChild, `${i}-${j}`));
-      } else if (child.type === 'paragraph') {
+  if (!isObject(normalized)) return null;
+
+  const node = normalized as { type?: string; content?: unknown[] };
+
+  if (node.type === 'doc' && Array.isArray(node.content) && node.content.length > 0) {
+    const children = node.content.map((child: any, i: number) => {
+      if (child?.type === 'heading' || child?.type === 'paragraph') {
         return child.content?.map((textChild: any, j: number) => renderNode(textChild, `${i}-${j}`));
       }
       return renderNode(child, i);
     }).flat();
     return <span className={className}>{children}</span>;
   }
-  
-  // Render full structure
-  const rendered = renderNode(normalized);
-  
-  if (as === 'inline') {
-    return <span className={className}>{rendered}</span>;
+
+  if (node.type === 'paragraph' && Array.isArray(node.content)) {
+    const children = node.content.map((child: any, i: number) => renderNode(child, i));
+    return <span className={className}>{children}</span>;
   }
-  
+
+  if (node.type === 'heading' && Array.isArray(node.content)) {
+    const children = node.content.map((child: any, i: number) => renderNode(child, i));
+    return <span className={className}>{children}</span>;
+  }
+
+  return <span className={className}>{renderNode(normalized)}</span>;
+}
+
+export const TiptapRenderer: React.FC<TiptapRendererProps> = ({
+  content,
+  className,
+  as = 'div',
+}) => {
+  if (content == null) return null;
+
+  let resolved: unknown = content;
+
+  if (typeof content === 'string') {
+    const trimmed = content.trim();
+    if (!trimmed) return null;
+
+    if (
+      (trimmed.startsWith('{') || trimmed.startsWith('[')) &&
+      (trimmed.endsWith('}') || trimmed.endsWith(']'))
+    ) {
+      try {
+        resolved = JSON.parse(trimmed);
+      } catch {
+        return as === 'inline' ? (
+          <span className={className}>{trimmed}</span>
+        ) : (
+          <div className={blockWrapperClass(className)}>{trimmed}</div>
+        );
+      }
+    } else {
+      return as === 'inline' ? (
+        <span className={className}>{trimmed}</span>
+      ) : (
+        <div className={blockWrapperClass(className)}>{trimmed}</div>
+      );
+    }
+  }
+
+  const normalized = normalizeNode(resolved);
+  if (!normalized) return null;
+
+  if (as === 'inline') {
+    return renderInlineContent(normalized, className);
+  }
+
+  if (typeof normalized === 'string') {
+    return <div className={blockWrapperClass(className)}>{normalized}</div>;
+  }
+
   return (
-    <div className={blockWrapperClass(className)}>
-      {rendered}
-    </div>
+    <div className={blockWrapperClass(className)}>{renderNode(normalized)}</div>
   );
 };

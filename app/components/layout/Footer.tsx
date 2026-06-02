@@ -13,7 +13,6 @@ import {
 } from '@/app/lib/siteContent';
 import { getAreaCity, getAreaRegion } from '@/app/lib/serviceAreaSlugs';
 import { getImageSrc } from '@/app/lib/utils';
-import { tiptapToText } from '@/app/lib/seo';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
 import { useScrollAnimation, useStaggeredAnimation } from '@/app/hooks/useScrollAnimation';
 import { getThemeColors } from '@/app/lib/themeBuilder';
@@ -161,9 +160,10 @@ export const Footer: React.FC = () => {
 
   const quickLinks = useMemo(() => getFooterNavLinks(pages), [pages]);
 
-  const copyright = useMemo(() => {
-    const fromCms = tiptapToText(site?.footer?.copyright);
-    if (fromCms) return fromCms;
+  const copyrightContent = site?.footer?.copyright;
+  const hasCmsCopyright = hasFooterDescriptionContent(copyrightContent);
+
+  const fallbackCopyright = useMemo(() => {
     const fallback = getCopyrightText(site);
     if (fallback && !/^©\d{4}$/.test(fallback.trim())) return fallback;
     return `© ${new Date().getFullYear()} ${businessName}. All rights reserved.`;
@@ -188,7 +188,7 @@ export const Footer: React.FC = () => {
     <footer
       ref={footerRef}
       id="contact"
-      className="relative overflow-hidden pt-12 pb-3 sm:pt-14 sm:pb-4 md:pt-16 md:pb-5"
+      className="relative overflow-hidden pt-8 pb-3 sm:pt-10 sm:pb-4 md:pt-12 md:pb-5"
       style={{
         backgroundColor: themeData.footerBackground,
         color: themeData.textOnDark,
@@ -476,12 +476,16 @@ export const Footer: React.FC = () => {
             borderTop: `1px solid color-mix(in srgb, ${themeData.textOnDark} 12%, transparent)`,
           }}
         >
-          <p
-            className="text-center text-sm leading-snug"
+          <div
+            className="text-center text-sm leading-snug [&_a]:text-inherit [&_a]:underline [&_a]:transition-opacity hover:[&_a]:opacity-90"
             style={{ color: themeData.textOnDarkSecondary }}
           >
-            {copyright}
-          </p>
+            {hasCmsCopyright ? (
+              <TiptapRenderer content={copyrightContent} as="inline" />
+            ) : (
+              fallbackCopyright
+            )}
+          </div>
         </div>
       </div>
     </footer>

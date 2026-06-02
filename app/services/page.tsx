@@ -18,22 +18,7 @@ export default function ServicesPage() {
     body: site?.theme?.bodyFont,
   };
 
-  if (loading && !site) {
-    return (
-      <div 
-        className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: themeColors.pageBackground }}
-      >
-        <div 
-          className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2"
-          style={{ 
-            borderTopColor: themeColors.primaryButton,
-            borderBottomColor: themeColors.primaryButton
-          }}
-        ></div>
-      </div>
-    );
-  }
+  if (loading) return null;
 
   if (error && !site) {
     return (
@@ -71,36 +56,9 @@ export default function ServicesPage() {
     );
   }
 
-  // Find services page
   const servicesPage = pages.find((p: Page) => p.pageType === 'service-list');
-  const displayPage = servicesPage;
 
-  if (!displayPage) {
-    return (
-      <div 
-        className="min-h-screen flex flex-col items-center justify-center p-4"
-        style={{ backgroundColor: themeColors.pageBackground }}
-      >
-        <h2 
-          className="text-2xl font-bold mb-4"
-          style={{ 
-            color: themeColors.mainText,
-            fontFamily: themeFonts.heading
-          }}
-        >
-          No Services Page Found
-        </h2>
-        <p 
-          style={{ 
-            color: themeColors.secondaryText,
-            fontFamily: themeFonts.body
-          }}
-        >
-          Please create a page with type &quot;services&quot; in the site builder.
-        </p>
-      </div>
-    );
-  }
+  if (!servicesPage) return null;
 
   return (
     <div 
@@ -112,8 +70,8 @@ export default function ServicesPage() {
     >
 
       <main>
-        <HeroSection hero={displayPage.hero} />
-        <ServicesSection servicesSection={displayPage.servicesSection} />
+        <HeroSection hero={servicesPage.hero} />
+        <ServicesSection servicesSection={servicesPage.servicesSection} />
       </main>
 
       <Footer />

@@ -7,7 +7,7 @@ import type { Page } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
 import { resolvePrimaryCta } from '@/app/components/ui/made';
-import { cn, getImageSrc } from '@/app/lib/utils';
+import { cn, getImageSrc, SECTION_PY } from '@/app/lib/utils';
 import { useScrollAnimation, useStaggeredAnimation } from '@/app/hooks/useScrollAnimation';
 
 interface AboutSectionProps {
@@ -274,7 +274,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
 
       <section
         id="about"
-        className={cn('relative overflow-hidden bg-white py-24', className)}
+        className={cn('relative overflow-hidden bg-white', SECTION_PY, className)}
         style={
           {
             '--theme-primary-color': primaryColor,
@@ -342,82 +342,51 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
           />
         </div>
 
-        <div className="relative z-10 flex min-h-screen items-center">
+        <div className="relative z-10 flex items-center">
           <div className="container mx-auto px-6 lg:px-8">
-            <div className="mb-20 space-y-8 text-center">
-              <div
-                className={`inline-block transition-all duration-1200 ${
-                  isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                }`}
-              >
-                <div
-                  className="floating-element mx-auto flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full"
-                  style={{
-                    background: `linear-gradient(135deg, ${primaryColor}08, ${secondaryColor}08)`,
-                    border: `1px solid ${primaryColor}15`,
-                  }}
-                >
-                  <svg
-                    className="h-8 w-8"
-                    style={{ color: primaryColor }}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+              <div className="space-y-8 text-left">
+                {aboutSection.title && (
+                  <h2
+                    ref={titleRef}
+                    className={`royal-about-title fade-slide-animation transition-all duration-1200 ${
+                      titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                    }`}
+                    style={{
+                      animationDelay: '0.2s',
+                      transform: `translateY(${scrollY * 0.05}px)`,
+                    }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
+                    <TiptapRenderer content={aboutSection.title} as="inline" />
+                  </h2>
+                )}
+
+                <div className="flex items-center">
+                  <div
+                    className={`h-px transition-all duration-1000 delay-500 ${
+                      titleVisible ? 'w-32 opacity-40' : 'w-0 opacity-0'
+                    }`}
+                    style={{
+                      background: `linear-gradient(90deg, ${primaryColor}, ${secondaryColor}, transparent)`,
+                    }}
+                  />
                 </div>
-              </div>
 
-              {aboutSection.title && (
-                <h2
-                  ref={titleRef}
-                  className={`royal-about-title fade-slide-animation mb-6 transition-all duration-1200 ${
-                    titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-                  }`}
-                  style={{
-                    animationDelay: '0.2s',
-                    transform: `translateY(${scrollY * 0.05}px)`,
-                  }}
-                >
-                  <TiptapRenderer content={aboutSection.title} as="inline" />
-                </h2>
-              )}
+                {aboutSection.description && (
+                  <p
+                    ref={descRef}
+                    className={`royal-about-description fade-slide-animation max-w-xl transition-all duration-1200 delay-400 ${
+                      descVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                    }`}
+                    style={{
+                      animationDelay: '0.4s',
+                      transform: `translateY(${scrollY * 0.03}px)`,
+                    }}
+                  >
+                    <TiptapRenderer content={aboutSection.description} as="inline" />
+                  </p>
+                )}
 
-              <div className="mt-6 flex items-center justify-center">
-                <div
-                  className={`h-px transition-all duration-1000 delay-500 ${
-                    titleVisible ? 'w-32 opacity-40' : 'w-0 opacity-0'
-                  }`}
-                  style={{
-                    background: `linear-gradient(90deg, transparent, ${primaryColor}, ${secondaryColor}, transparent)`,
-                  }}
-                />
-              </div>
-
-              {aboutSection.description && (
-                <p
-                  ref={descRef}
-                  className={`royal-about-description fade-slide-animation mx-auto max-w-3xl transition-all duration-1200 delay-400 ${
-                    descVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-                  style={{
-                    animationDelay: '0.4s',
-                    transform: `translateY(${scrollY * 0.03}px)`,
-                  }}
-                >
-                  <TiptapRenderer content={aboutSection.description} as="inline" />
-                </p>
-              )}
-            </div>
-
-            <div className="grid items-center gap-20 lg:grid-cols-2">
-              <div>
                 {features.length > 0 && (
                   <div ref={featuresRef} className="mb-12 space-y-6">
                     {features.map((feature, index) => (
@@ -458,12 +427,18 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                 )}
 
                 {primaryCta && (
-                  <Link href={primaryCta.href} className="royal-cta-button group">
-                    <span className="button-text">{primaryCta.label}</span>
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </Link>
+                  <div
+                    className={`transition-all duration-1200 ${
+                      isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
+                  >
+                    <Link href={primaryCta.href} className="royal-cta-button group">
+                      <span className="button-text">{primaryCta.label}</span>
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  </div>
                 )}
               </div>
 

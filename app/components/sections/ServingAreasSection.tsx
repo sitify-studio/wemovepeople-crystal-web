@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import type { Page } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { tiptapToText } from '@/app/lib/seo';
 import { getAreaCity, getAreaRegion, normalizeSlug, resolveServiceSlug } from '@/app/lib/serviceAreaSlugs';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
@@ -113,7 +113,7 @@ export const ServingAreasSection: React.FC<ServingAreasSectionProps> = ({
 
   return (
     <section
-      className={cn('py-16 sm:py-20 md:py-24 lg:py-32 relative overflow-hidden bg-pink-50', className)}
+      className={cn(SECTION_PY, 'relative overflow-hidden bg-pink-50', className)}
     >
       {/* Background subtle elements */}
       <div className="absolute inset-0 opacity-5">

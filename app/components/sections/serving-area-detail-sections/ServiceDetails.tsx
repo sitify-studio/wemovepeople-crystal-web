@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
 import { getImageSrc } from '@/app/lib/utils';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 import { ChevronDown, ChevronUp, CheckCircle, Zap, Shield, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
@@ -40,7 +40,7 @@ export const ServiceDetails: React.FC<ServiceDetailsProps> = ({ details, classNa
 
   return (
     <section 
-      className={cn('py-24 md:py-32 lg:py-48', className)}
+      className={cn(SECTION_PY, className)}
       style={{ backgroundColor: themeColors.pageBackground, fontFamily: themeFonts.body }}
     >
       <div className="container mx-auto px-6 lg:px-12">

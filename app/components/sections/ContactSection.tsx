@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 import type { Page, BusinessHours } from '@/app/lib/types';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { cn } from '@/app/lib/utils';
+import { cn, SECTION_PY } from '@/app/lib/utils';
 import { useScrollAnimation } from '@/app/hooks/useScrollAnimation';
 import { ArrowRight } from 'lucide-react';
 import { ContactSideForm } from '@/app/components/ui/ContactSideForm';
@@ -86,7 +86,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     <section
       id="contact"
       className={cn(
-        'relative overflow-hidden bg-white py-16 sm:py-20 md:py-24 lg:py-28',
+        'relative overflow-hidden bg-white',
+        SECTION_PY,
         className
       )}
     >
@@ -183,9 +184,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
         <ContactSideForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
 
         {(showContactInfo || showMap) && (
-          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-stretch lg:gap-16">
             {showContactInfo && (
-              <div className="space-y-10">
+              <div className="space-y-10 lg:h-full">
                 <div>
                   <h3
                     className="mb-6 text-2xl font-light text-gray-900 sm:text-3xl"
@@ -297,14 +298,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             )}
 
             {showMap && (
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
+              <div className="relative min-h-[280px] w-full overflow-hidden rounded-2xl border border-gray-200 shadow-lg lg:min-h-0 lg:h-full">
                 {site?.business?.coordinates?.latitude != null &&
                 site?.business?.coordinates?.longitude != null ? (
                   <iframe
                     title="Office Location"
                     width="100%"
                     height="100%"
-                    className="h-full w-full border-0 grayscale contrast-[1.05] opacity-90 transition-all duration-700 hover:grayscale-0"
+                    className="absolute inset-0 h-full w-full border-0 grayscale contrast-[1.05] opacity-90 transition-all duration-700 hover:grayscale-0"
                     src={`https://maps.google.com/maps?q=${site.business.coordinates.latitude},${site.business.coordinates.longitude}&z=15&output=embed`}
                     allowFullScreen
                     loading="lazy"

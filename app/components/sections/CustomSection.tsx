@@ -3,7 +3,7 @@
 import React from 'react';
 import { Page } from '@/app/lib/types';
 import { TiptapRenderer } from '@/app/components/ui/TiptapRenderer';
-import { getImageSrc, cn } from '@/app/lib/utils';
+import { getImageSrc, cn, SECTION_PY } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
 
@@ -17,7 +17,7 @@ export const CustomSection: React.FC<CustomSectionProps> = ({ section, className
     const themeFonts = useThemeFonts();
 
     return (
-        <section className={cn('py-16', className)}>
+        <section className={cn(SECTION_PY, className)}>
             <div className="container mx-auto px-4">
                 {section.title && (
                     <h2

@@ -71,7 +71,7 @@ export const WebBuilderProvider: React.FC<WebBuilderProviderProps> = ({ children
   const [testimonials, setTestimonials] = useState<{ title?: string; description?: string; testimonials: any[] } | null>(null);
   const [serviceAreaPages, setServiceAreaPages] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState<Page | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(Boolean(SITE_SLUG));
   const [error, setError] = useState<string | null>(null);
 
   const loadSite = async (slug: string) => {
@@ -176,6 +176,7 @@ export const WebBuilderProvider: React.FC<WebBuilderProviderProps> = ({ children
   // Auto-load site from env variable on mount
   useEffect(() => {
     if (!SITE_SLUG) {
+      setLoading(false);
       setError('NEXT_PUBLIC_WEBBUILDER_SITE_SLUG environment variable is not defined. Please check your .env file.');
       return;
     }
