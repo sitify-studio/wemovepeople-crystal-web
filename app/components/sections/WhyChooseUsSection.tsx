@@ -210,8 +210,8 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
     .royal-service-card {
       background: rgba(255, 255, 255, 0.95);
       border: 1px solid rgba(var(--theme-primary-rgb), 0.08);
-      border-radius: 24px;
-      padding: 3rem 2rem;
+      border-radius: 20px;
+      padding: 1.5rem 1.25rem;
       position: relative;
       overflow: hidden;
       backdrop-filter: blur(20px);
@@ -243,9 +243,9 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
 
     /* 3D Number display */
     .royal-number-display {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 2rem;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 1rem;
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
@@ -373,11 +373,11 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
 
     .card-glow-blob {
       position: absolute;
-      top: 12%;
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 200px;
-      height: 200px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       background: radial-gradient(
         circle,
@@ -396,10 +396,8 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-end;
-      min-height: 220px;
-      gap: 1rem;
-      padding-top: 1rem;
+      justify-content: flex-start;
+      gap: 0.75rem;
     }
 
     .card-description {
@@ -411,7 +409,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
     }
 
     .royal-service-card--content {
-      padding: 2rem 1.75rem 2.25rem;
+      padding: 1.25rem 1.25rem 1.5rem;
       text-align: center;
     }
   `;
@@ -541,7 +539,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
 
         <div className="container mx-auto px-6 lg:px-8 relative z-10">
           {/* Header Section with royal styling */}
-          <div className="text-center mb-20 space-y-8">
+          <div className="text-center mb-10 md:mb-12 space-y-6">
             
             {/* Subtle icon indicator */}
             <div 
@@ -616,7 +614,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
           {/* Service Cards Grid with royal design */}
           <div
             ref={servicesRef}
-            className={cn('grid gap-8 lg:gap-10', cardGridClass)}
+            className={cn('grid gap-6 lg:gap-8', cardGridClass)}
           >
             {services && services.length > 0 ? services.map((service, index) => {
               const showStat = isStatHighlight(service.description);
@@ -645,22 +643,27 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
                   >
                     <div className="shimmer-overlay" />
 
-                    {showStat ? (
-                      <>
-                        <div className="royal-number-display floating-element">
-                          <div className="royal-number-circle">
-                            <span className="number-value counter-animation">{value}</span>
-                            {suffix && <span className="number-suffix">{suffix}</span>}
-                          </div>
-                        </div>
-                        {service.name && (
-                          <h3 className="service-title mb-6">{service.name}</h3>
+                    {service.name && (
+                      <h3 className="service-title mb-3">
+                        {service.titleContent && typeof service.titleContent === 'object' ? (
+                          <TiptapRenderer content={service.titleContent} as="inline" />
+                        ) : (
+                          service.name
                         )}
-                      </>
+                      </h3>
+                    )}
+
+                    {showStat ? (
+                      <div className="royal-number-display floating-element">
+                        <div className="royal-number-circle">
+                          <span className="number-value counter-animation">{value}</span>
+                          {suffix && <span className="number-suffix">{suffix}</span>}
+                        </div>
+                      </div>
                     ) : (
-                      <div className="card-content-body">
-                        <div className="card-glow-blob" aria-hidden />
-                        {service.description && (
+                      service.description && (
+                        <div className="card-content-body">
+                          <div className="card-glow-blob" aria-hidden />
                           <div className="card-description">
                             {service.descriptionContent &&
                             typeof service.descriptionContent === 'object' ? (
@@ -672,43 +675,9 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
                               service.description
                             )}
                           </div>
-                        )}
-                        {service.name && (
-                          <h3 className="service-title mb-0">
-                            {service.titleContent && typeof service.titleContent === 'object' ? (
-                              <TiptapRenderer content={service.titleContent} as="inline" />
-                            ) : (
-                              service.name
-                            )}
-                          </h3>
-                        )}
-                      </div>
+                        </div>
+                      )
                     )}
-
-                    <div className="flex items-center justify-center space-x-3 opacity-60 mt-6">
-                      <div
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: theme.primaryColor }}
-                      />
-                      <div
-                        className="w-12 h-px"
-                        style={{
-                          background: `linear-gradient(90deg, ${theme.primaryColor}, ${theme.secondaryColor})`,
-                        }}
-                      />
-                      <div
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: theme.secondaryColor }}
-                      />
-                    </div>
-
-                    <div
-                      className="absolute top-6 right-6 w-2 h-2 rounded-full floating-element opacity-40"
-                      style={{
-                        backgroundColor: theme.primaryColor,
-                        animationDelay: `${index * 0.7}s`,
-                      }}
-                    />
                   </div>
                 </div>
               );
