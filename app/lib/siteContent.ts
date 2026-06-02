@@ -211,13 +211,11 @@ export function splitHeaderNavItems(
 
 /** Header nav mirrors footer Explore links (all published routes + gallery/testimonials), minus home. */
 export function getHeaderNavItems(pages?: Page[]): HeaderNavItem[] {
-  return getFooterNavLinks(pages)
-    .filter((link) => link.href !== '/')
-    .map((link) => ({
-      id: link.id,
-      name: link.label,
-      href: link.href,
-    }));
+  return getFooterNavLinks(pages).map((link) => ({
+    id: link.id,
+    name: link.label,
+    href: link.href,
+  }));
 }
 
 export type FooterNavLink = {

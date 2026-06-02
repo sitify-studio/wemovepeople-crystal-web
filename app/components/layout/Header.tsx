@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import { useWebBuilder } from '@/app/providers/WebBuilderProvider';
 import { useThemeColors, useThemeFonts } from '@/app/hooks/useTheme';
-import { getBrandName, getHeaderNavItems } from '@/app/lib/siteContent';
+import { getHeaderNavItems } from '@/app/lib/siteContent';
 import { getImageSrc, cn } from '@/app/lib/utils';
 import { OptimizedImage } from '@/app/components/ui/OptimizedImage';
 import { resolvePrimaryCta } from '@/app/components/ui/made';
@@ -76,7 +76,7 @@ const headerStyles = `
     letter-spacing: 0.06em;
     text-decoration: none;
     color: #fff !important;
-    background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) !important;
+    background: var(--theme-cta-color) !important;
     border: none !important;
     border-radius: 50px;
     box-shadow: none;
@@ -85,7 +85,7 @@ const headerStyles = `
   .header-cta-button:hover,
   .header-cta-button:focus {
     color: #fff !important;
-    background: linear-gradient(135deg, var(--theme-primary-color), var(--theme-secondary-color)) !important;
+    background: var(--theme-cta-color) !important;
     border: none !important;
     transform: none;
     box-shadow: none;
@@ -122,7 +122,6 @@ export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const logoImage = site?.theme?.logoUrl ? getImageSrc(site.theme.logoUrl) : undefined;
-  const businessName = getBrandName(site);
   const phoneNumber = site?.business?.phone?.trim();
 
   const themeData = useMemo(() => {
@@ -130,6 +129,12 @@ export const Header: React.FC = () => {
     return {
       primaryColor: t?.primaryButtonColorLight || t?.darkPrimaryColor || '#4f46e5',
       secondaryColor: t?.darkSecondaryColor || t?.lightSecondaryColor || '#7c3aed',
+      ctaColor:
+        t?.hoverActiveColorLight ||
+        t?.hoverActiveColorDark ||
+        t?.darkSecondaryColor ||
+        t?.lightSecondaryColor ||
+        '#7c3aed',
     };
   }, [site?.theme]);
 
@@ -174,6 +179,7 @@ export const Header: React.FC = () => {
     const root = document.documentElement;
     root.style.setProperty('--theme-primary-color', themeData.primaryColor);
     root.style.setProperty('--theme-secondary-color', themeData.secondaryColor);
+    root.style.setProperty('--theme-cta-color', themeData.ctaColor);
     root.style.setProperty('--theme-primary-rgb', hexToRgb(themeData.primaryColor));
     root.style.setProperty('--theme-secondary-rgb', hexToRgb(themeData.secondaryColor));
   }, [themeData]);
@@ -197,30 +203,20 @@ export const Header: React.FC = () => {
         }}
       >
         <div className="mx-auto flex h-[4.75rem] w-full max-w-[90rem] items-center gap-3 px-4 sm:gap-4 sm:px-6 lg:h-[5.25rem] lg:gap-6 lg:px-16">
-          {(logoImage || businessName) && (
+          {logoImage && (
             <Link
               href="/"
-              className="flex shrink-0 items-center gap-3 no-underline sm:gap-4"
-              aria-label={businessName ? `${businessName} home` : 'Home'}
+              className="flex shrink-0 items-center no-underline"
+              aria-label="Home"
             >
-              {logoImage && (
-                <OptimizedImage
-                  src={logoImage}
-                  alt={businessName ? `${businessName} logo` : 'Logo'}
-                  width={240}
-                  height={72}
-                  priority
-                  className="h-14 w-auto max-h-[4rem] object-contain sm:h-16 lg:h-[4.25rem]"
-                />
-              )}
-              {businessName && (
-                <span
-                  className="max-w-[9rem] text-sm font-semibold leading-tight tracking-tight sm:max-w-none sm:text-base lg:text-lg xl:text-xl"
-                  style={{ fontFamily: themeFonts.heading, color: themeColors.mainText }}
-                >
-                  {businessName}
-                </span>
-              )}
+              <OptimizedImage
+                src={logoImage}
+                alt="Logo"
+                width={240}
+                height={72}
+                priority
+                className="h-14 w-auto max-h-[4rem] object-contain sm:h-16 lg:h-[4.25rem]"
+              />
             </Link>
           )}
 

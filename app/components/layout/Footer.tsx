@@ -198,27 +198,20 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-6">
           <div className="lg:col-span-2">
-            {(logoImage || businessName) && (
+            {logoImage && (
               <Link
                 href="/"
-                className={`mb-6 inline-flex flex-col items-start gap-3 no-underline transition-all duration-1000 sm:flex-row sm:items-center sm:gap-4 ${
+                className={`mb-6 inline-block no-underline transition-all duration-1000 ${
                   footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
               >
-                {logoImage && (
-                  <Image
-                    src={logoImage}
-                    alt={businessName ? `${businessName} logo` : 'Logo'}
-                    width={320}
-                    height={100}
-                    className="wb-logo-on-dark h-20 w-auto md:h-24 lg:h-28"
-                  />
-                )}
-                {businessName && (
-                  <span className="text-xl font-light leading-tight tracking-wide text-white md:text-2xl lg:text-3xl">
-                    {businessName}
-                  </span>
-                )}
+                <Image
+                  src={logoImage}
+                  alt="Logo"
+                  width={320}
+                  height={100}
+                  className="wb-logo-on-dark h-20 w-auto md:h-24 lg:h-28"
+                />
               </Link>
             )}
 
