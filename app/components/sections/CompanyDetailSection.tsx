@@ -87,11 +87,7 @@ export const CompanyDetailSection: React.FC<CompanyDetailSectionProps> = ({
   return (
     <section
       id="company-detail"
-      className={cn(
-        'relative overflow-hidden bg-[#f8f6f4]',
-        SECTION_PY,
-        className
-      )}
+      className={cn('relative bg-[#f8f6f4]', SECTION_PY, className)}
     >
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -109,8 +105,8 @@ export const CompanyDetailSection: React.FC<CompanyDetailSectionProps> = ({
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-          <header className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
+        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
+          <header className="z-10 lg:col-span-4 lg:sticky lg:top-24 lg:self-start xl:top-28">
             <div className="mb-5 flex items-center gap-3">
               <span
                 className="h-px w-10 shrink-0"
