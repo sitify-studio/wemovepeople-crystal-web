@@ -91,8 +91,8 @@ export default function HomeClient() {
           ctaSection={homePage.ctaSection}
           page={homePage}
         />
-        <CompanyDetailSection companyDetailSection={homePage.companyDetailSection} />
         <CTASection ctaSection={homePage.ctaSection} />
+        <CompanyDetailSection companyDetailSection={homePage.companyDetailSection} />
         <BlogSection blogSection={homePage.blogSection} />
         <ProjectsSection
           projectSection={homePage.projectSection}
